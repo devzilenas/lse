@@ -8,7 +8,7 @@ namespace LinkShareEasyModel
 {
     public class LinkRequest
     {
-        public long LinkRequestID { get; set; }
+        public int LinkRequestID { get; set; }
         public DateTime RequestedOn { get; set; }
         public String Token { get; set; }
         public DateTime AvailableUntil { get; set; } 

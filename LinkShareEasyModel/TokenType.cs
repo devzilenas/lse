@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LinkShareEasyModel
 {
-    public class Link
+    public class TokenType
     {
-        public int LinkId {get; set;}
-        public String LinkHref { get; set; }
-        public int TokenId { get; set; }
+        public int TokenTypeID { get; set; }
+        public String TokenTypeText { get; set; }
     }
 }

@@ -14,10 +14,15 @@ namespace LinkShareEasyADO
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO TokenRequest(RequestedOn, LinkHref) VALUES (@1, @2); SELECT SCOPE_IDENTITY()";
+                c.Open();
+
+                cmd.CommandText = "INSERT INTO TokenRequests(RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId) VALUES (@1, @2, @3, @4, @5); SELECT SCOPE_IDENTITY()";
 
                 cmd.Parameters.AddWithValue("@1", tokenRequest.RequestedOn);
                 cmd.Parameters.AddWithValue("@2", tokenRequest.LinkHref);
+                cmd.Parameters.AddWithValue("@3", tokenRequest.TokenId);
+                cmd.Parameters.AddWithValue("@4", tokenRequest.LinkId);
+                cmd.Parameters.AddWithValue("@5", tokenRequest.TokenTypeId);
 
                 var id = Convert.ToInt64(cmd.ExecuteScalar());
                 return Find(id);
@@ -29,18 +34,21 @@ namespace LinkShareEasyADO
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
-                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId FROM TokenRequests";
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId FROM TokenRequests";
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.HasRows)
+                    if (reader.HasRows && reader.Read())
                     {
                         return new TokenRequest()
                         { 
-                            TokenRequestId = reader.GetInt64(reader.GetOrdinal("TokenRequestId"))
+                            TokenRequestId = reader.GetInt32(reader.GetOrdinal("TokenRequestId"))
                             , RequestedOn = reader.GetDateTime(reader.GetOrdinal("RequestedOn"))
                             , LinkHref = reader.GetString(reader.GetOrdinal("LinkHref"))
-                            , TokenID = reader.GetInt64(reader.GetOrdinal("TokenId"))
-                            , LinkId = reader.GetInt64(reader.GetOrdinal("LinkId"))
+                            , TokenId = reader.GetInt32(reader.GetOrdinal("TokenId"))
+                            , LinkId = reader.GetInt32(reader.GetOrdinal("LinkId"))
+                            , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
                         };
                     }
                     else
@@ -49,7 +57,6 @@ namespace LinkShareEasyADO
                     }
                 } 
             } 
-        }
-
+        } 
     }
 }

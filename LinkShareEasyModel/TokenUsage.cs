@@ -8,7 +8,8 @@ namespace LinkShareEasyModel
 {
     public class TokenUsage
     {
-        public long TokenID { get; set; }
+        public int TokenUsageId { get; set; }
+        public int TokenId { get; set; }
         public String Token { get; set; }
         public DateTime? UsedOn { get; set; }
     }

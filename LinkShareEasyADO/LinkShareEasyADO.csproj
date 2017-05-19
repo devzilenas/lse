@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,8 +42,10 @@
   <ItemGroup>
     <Compile Include="ADOLink.cs" />
     <Compile Include="ADONumericToken.cs" />
-    <Compile Include="ADONumericTokenUsage.cs" />
+    <Compile Include="ADOTokenUsage.cs" />
+    <Compile Include="ADOToken.cs" />
     <Compile Include="ADOTokenRequest.cs" />
+    <Compile Include="ADOTokenType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

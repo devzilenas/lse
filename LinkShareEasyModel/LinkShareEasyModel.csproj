@@ -43,10 +43,10 @@
     <Compile Include="Link.cs" />
     <Compile Include="LinkRequest.cs" />
     <Compile Include="NumericToken.cs" />
-    <Compile Include="NumericTokenUsage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenRequest.cs" />
+    <Compile Include="TokenType.cs" />
     <Compile Include="TokenUsage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

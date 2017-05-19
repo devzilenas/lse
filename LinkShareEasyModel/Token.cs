@@ -8,8 +8,9 @@ namespace LinkShareEasyModel
 {
     public class Token : IToken
     {
-        public long TokenID { get; set; }
+        public int TokenId { get; set; }
         public String TokenText { get; set; }
+        public int TokenTypeId { get; set; }
 
     }
 }

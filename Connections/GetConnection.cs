@@ -9,9 +9,14 @@ namespace Connections
 {
     public class GetConnections
     {
+        public static String ConnectionString()
+        {
+            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString; 
+        }
+
         public static SqlConnection GetConnection()
         {
-           return new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            return new SqlConnection(ConnectionString());
         }
     }
 }

@@ -18,12 +18,12 @@ namespace LinkShareEasyADO
             using (var t = c.BeginTransaction(System.Data.IsolationLevel.Serializable))
             { 
                 c.Open();
-                cmd.CommandText = "INSERT INTO NumericTokens (NumericToken, Used) VALUES (@1, @2); SELECT SCOPE_IDENTITY()";
+                cmd.CommandText = "INSERT INTO NumericTokens (NumericTokenN, Used) VALUES (@1, @2); SELECT SCOPE_IDENTITY()";
 
                 cmd.Parameters.AddWithValue("@1", numericToken.TokenText);
                 cmd.Parameters.AddWithValue("@2", 1);
 
-                var id = Convert.ToInt64(cmd.ExecuteScalar());
+                var id = Convert.ToInt32(cmd.ExecuteScalar());
                 return id; 
             }
         }
@@ -38,7 +38,9 @@ namespace LinkShareEasyADO
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
-                cmd.CommandText = "SELECT TOP 1 NumericTokenID FROM NumericTokens WHERE Used = @1";
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId FROM NumericTokens WHERE Used = @1";
                 cmd.Parameters.AddWithValue("@1", false);
 
                 using (var reader = cmd.ExecuteReader())
@@ -59,8 +61,10 @@ namespace LinkShareEasyADO
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
-                cmd.CommandText = "SELECT TOP @2 NumericTokenID, NumericToken, Used WHERE Used = @1";
-                cmd.Parameters.AddWithValue("@1",false);
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP (@2) NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE Used = @1";
+                cmd.Parameters.AddWithValue("@1", false);
                 cmd.Parameters.AddWithValue("@2", limit);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -69,8 +73,8 @@ namespace LinkShareEasyADO
                         reader.Read();
                         return new NumericToken()
                         { 
-                            NumericTokenID = reader.GetInt64(reader.GetOrdinal("NumericTokenID"))
-                            , NumericTokenText = reader.GetInt32(reader.GetOrdinal("NumericToken"))
+                            NumericTokenId = reader.GetInt32(reader.GetOrdinal("NumericTokenId"))
+                            , NumericTokenN = reader.GetInt32(reader.GetOrdinal("NumericTokenN"))
                             , Used = reader.GetBoolean(reader.GetOrdinal("Used"))
                         };
                     }
@@ -82,5 +86,55 @@ namespace LinkShareEasyADO
             } 
         }
 
+        public NumericToken Find(long numericTokenId)
+        {
+            using (var c = Connections.GetConnections.GetConnection())
+            using (var cmd = c.CreateCommand())
+            {
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE NumericTokenId = @1";
+                cmd.Parameters.AddWithValue("@1", numericTokenId);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows && reader.Read())
+                    {
+                        return new NumericToken()
+                        {
+                            NumericTokenId = reader.GetInt32(reader.GetOrdinal("NumericTokenId"))
+                            , NumericTokenN = reader.GetInt32(reader.GetOrdinal("NumericTokenN"))
+                            , Used = reader.GetBoolean(reader.GetOrdinal("Used"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("Numeric token usage not found with id={0:d}", numericTokenId));
+                    }
+                }
+            } 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numericTokenId"></param>
+        /// <returns></returns>
+        public NumericToken SetUsed(long numericTokenId)
+        {
+            NumericToken nt = Find(numericTokenId);
+
+            using (var c = Connections.GetConnections.GetConnection())
+            using (var cmd = c.CreateCommand())
+            {
+                c.Open();
+
+                cmd.CommandText = "UPDATE NumericTokens SET Used = @1 WHERE NumericTokenId = @1";
+                cmd.Parameters.AddWithValue("@1", numericTokenId);
+                cmd.ExecuteNonQuery();
+            }
+
+            return Find(numericTokenId);
+        }
     }
 }

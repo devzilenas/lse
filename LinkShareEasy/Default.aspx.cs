@@ -11,9 +11,13 @@ namespace LinkShareEasy
 {
     public partial class _Default : Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e) 
         {
+            TextBox1.Attributes.Add("placeholder", "Paste link here");
+            LinkButton1.Attributes.Add("data-placement", "button");
+            LinkButton1.Attributes.Add("type", "button");
 
+            TextBox1.Focus();
         }
 
         /// <summary>
@@ -24,11 +28,17 @@ namespace LinkShareEasy
         protected void TextBox1_TextChanged(object sender, EventArgs e)
         {
             //Save request.
-            TokenRequest tokenRequest = new TokenRequest() { LinkHref = TextBox1.Text, RequestedOn = DateTime.Now }; 
-
+            TokenRequest tokenRequest = new TokenRequest() { LinkHref = TextBox1.Text, RequestedOn = DateTime.Now, TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue), TokenTypeText = RadioButtonList1.SelectedItem.Text};
+            TokenFactory tf = new TokenFactory();
+            IToken    token = tf.GetToken(tokenRequest);
 
             //Next assign a token to this request.
-            TextBox2.Text = "Token appears here";
+            TextBox2.Text = token.TokenText;
+        }
+
+        protected void RadioButtonList1_DataBound(object sender, EventArgs e)
+        {
+            RadioButtonList1.SelectedIndex = 0;
         }
     }
 }

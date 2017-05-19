@@ -8,10 +8,12 @@ namespace LinkShareEasyModel
 {
     public class TokenRequest
     {
-        public long TokenRequestId { get; set; }
+        public int TokenRequestId { get; set; }
         public DateTime RequestedOn { get; set; }
-        public long LinkId { get; set; }
+        public int LinkId { get; set; }
         public String LinkHref { get; set; }
-        public long TokenID { get; set; }
+        public int TokenId { get; set; }
+        public int TokenTypeId { get; set; }
+        public String TokenTypeText { get; set; }
     }
 }

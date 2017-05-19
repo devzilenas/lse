@@ -9,4 +9,4 @@ DECLARE @last AS INT
 SET @last = 999999
 
 BEGIN TRANSACTION
-WHILE(@first <= @last) BEGIN INSERT INTO NumericToken (NumericToken) VALUES(@first) SET @first += @step END COMMIT TRANSACTION
+WHILE(@first <= @last) BEGIN INSERT INTO NumericTokens(NumericTokenN) VALUES(@first) SET @first += @step END COMMIT TRANSACTION

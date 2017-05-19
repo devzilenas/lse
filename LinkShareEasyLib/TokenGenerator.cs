@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Connections;
 using LinkShareEasyModel;
 using LinkShareEasyADO;
+using System.Transactions;
 
 namespace LinkShareEasyLib
 {
@@ -19,19 +20,27 @@ namespace LinkShareEasyLib
         /// <returns></returns>
         public IToken MakeNumeric(TokenRequest tokenRequest)
         {
-            ADONumericToken ant = new ADONumericToken();
+            //TODO: Read https://www.codeproject.com/Articles/690136/All-About-TransactionScope
+            using (var ts = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions() { IsolationLevel = IsolationLevel.Serializable }))
+            {
 
-            //1. Take available numeric token.
-            NumericToken nt = ant.GetAvailable(1);
+                ADONumericToken ant = new ADONumericToken();
+                //1. Take available numeric token.
+                NumericToken nt = ant.GetAvailable(1);
+                //2. Set numeric token used so nobody could use it again.
+                ant.SetUsed(nt.NumericTokenId);
+ 
+                ADOToken at = new ADOToken();
+                Token token = at.Insert(new Token() {TokenText = nt.TokenText, TokenTypeId = tokenRequest.TokenTypeId});
 
-            //2. Make token not appear as available.
-            ADONumericTokenUsage antu = new ADONumericTokenUsage();
-            NumericTokenUsage ntu = antu.MakeUsed(nt, tokenRequest);
+                ADOLink al = new ADOLink();
+                Link link = al.Insert(new Link() {LinkHref = tokenRequest.LinkHref, TokenId = tokenRequest.TokenId});
+                al.Insert(link);
 
-            //3. 
-            ADOTokenRequest atr = new ADOTokenRequest();
+                ts.Complete();
 
-            return nt; 
+                return token;
+            }
         }
     }
 }

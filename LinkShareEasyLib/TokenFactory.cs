@@ -17,7 +17,20 @@ namespace LinkShareEasyLib
         /// <returns></returns>
         public IToken GetToken(TokenRequest tokenRequest)
         {
-            return new TokenGenerator().MakeNumeric(tokenRequest);
+            ADOTokenRequest atr = new ADOTokenRequest(); 
+            TokenRequest     tr = atr.Insert(tokenRequest);
+
+            switch (tokenRequest.TokenTypeText)
+            {
+                case "Numeric":
+                        return new TokenGenerator().MakeNumeric(tokenRequest);
+                //case "Alpha":
+                //        return new TokenGenerator().MakeAlpha(tokenRequest);
+                //    break;
+                default:
+                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
+            }
+
         }
     }
 
