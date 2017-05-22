@@ -24,11 +24,8 @@ namespace LinkShareEasyLib
             {
                 case "Numeric":
                         return new TokenGenerator().MakeNumeric(tokenRequest);
-                //case "Alpha":
-                //        return new TokenGenerator().MakeAlpha(tokenRequest);
-                //    break;
                 default:
-                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
+                   throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
             }
 
         }

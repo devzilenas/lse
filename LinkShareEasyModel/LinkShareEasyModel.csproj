@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banner.cs" />
+    <Compile Include="DurationDim.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkRequest.cs" />
+    <Compile Include="LinkShareEasyConfig.cs" />
     <Compile Include="NumericToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />

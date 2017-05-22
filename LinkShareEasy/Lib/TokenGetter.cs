@@ -9,9 +9,9 @@ namespace LinkShareEasy.Lib
 {
     public class TokenGetter
     {
-        public IToken GetToken(TokenRequest linkRequest)
+        public IToken GetToken(TokenRequest tokenRequest)
         {
-            return new TokenFactory().GetToken(linkRequest);
+            return new TokenFactory().GetToken(tokenRequest);
         }
     }
 }

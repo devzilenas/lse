@@ -28,10 +28,17 @@ namespace LinkShareEasyLib
                 //1. Take available numeric token.
                 NumericToken nt = ant.GetAvailable(1);
                 //2. Set numeric token used so nobody could use it again.
-                ant.SetUsed(nt.NumericTokenId);
+                ant.SetUsed(nt.NumericTokenId, true);
  
                 ADOToken at = new ADOToken();
-                Token token = at.Insert(new Token() {TokenText = nt.TokenText, TokenTypeId = tokenRequest.TokenTypeId});
+                Token token = at.Insert(
+                    new Token() 
+                    {
+                        TokenText = nt.TokenText
+                        , TokenTypeId = tokenRequest.TokenTypeId
+                        , IsExpired = false
+                        , ValidForDuration = new ADOLinkShareEasyConfig().Find().
+                    });
 
                 ADOLink al = new ADOLink();
                 Link link = al.Insert(new Link() {LinkHref = tokenRequest.LinkHref, TokenId = tokenRequest.TokenId});

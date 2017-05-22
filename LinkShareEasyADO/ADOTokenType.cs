@@ -8,7 +8,12 @@ using LinkShareEasyModel;
 namespace LinkShareEasyADO
 {
     public class ADOTokenType
-    {
+    { 
+        public TokenType ById(int id)
+        {
+            return All().First(t => t.TokenTypeID == id);
+        }
+
         /// <summary>
         /// Gets all token types.
         /// </summary>

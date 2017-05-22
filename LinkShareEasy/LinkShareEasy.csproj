@@ -161,6 +161,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <None Include="Properties\PublishProfiles\p.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -196,6 +197,7 @@
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
     <Content Include="Sponsoring.aspx" />
+    <Content Include="Transfer.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -272,7 +274,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Lib\LinkRequest.cs" />
     <Compile Include="Lib\TokenGetter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -298,6 +299,13 @@
       <DependentUpon>Sponsoring.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Transfer.aspx.cs">
+      <DependentUpon>Transfer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transfer.aspx.designer.cs">
+      <DependentUpon>Transfer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -310,6 +318,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Connections\Connections.csproj">
+      <Project>{155d0441-077b-456f-adf8-df54171cad5e}</Project>
+      <Name>Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LinkShareEasyADO\LinkShareEasyADO.csproj">
+      <Project>{a9e3ad3e-6d5f-42f5-84ec-fcdc6a4a4f85}</Project>
+      <Name>LinkShareEasyADO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LinkShareEasyLib\LinkShareEasyLib.csproj">
       <Project>{8f10d4ef-8829-40a5-993d-49c8924f2683}</Project>
       <Name>LinkShareEasyLib</Name>

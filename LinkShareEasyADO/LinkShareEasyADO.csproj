@@ -40,7 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADOBanner.cs" />
+    <Compile Include="ADODurationDim.cs" />
     <Compile Include="ADOLink.cs" />
+    <Compile Include="ADOLinkRequest.cs" />
+    <Compile Include="ADOLinkShareEasyConfig.cs" />
     <Compile Include="ADONumericToken.cs" />
     <Compile Include="ADOTokenUsage.cs" />
     <Compile Include="ADOToken.cs" />

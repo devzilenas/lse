@@ -29,6 +29,39 @@ namespace LinkShareEasyADO
             }
         }
 
+        public TokenRequest FindFor(Token token)
+        {
+            int tokenId = token.TokenId;
+            using (var c = Connections.GetConnections.GetConnection())
+            using (var cmd = c.CreateCommand())
+            {
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId FROM TokenRequests WHERE TokenId = @1";
+                cmd.Parameters.AddWithValue("@1", tokenId);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows && reader.Read())
+                    {
+                        return new TokenRequest()
+                        { 
+                            TokenRequestId = reader.GetInt32(reader.GetOrdinal("TokenRequestId"))
+                            , RequestedOn = reader.GetDateTime(reader.GetOrdinal("RequestedOn"))
+                            , LinkHref = reader.GetString(reader.GetOrdinal("LinkHref"))
+                            , TokenId = reader.GetInt32(reader.GetOrdinal("TokenId"))
+                            , LinkId = reader.GetInt32(reader.GetOrdinal("LinkId"))
+                            , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("Token request not found with id={0:d}", tokenId));
+                    }
+                } 
+            } 
+        }
+
         private TokenRequest Find(long id)
         {
             using (var c = Connections.GetConnections.GetConnection())

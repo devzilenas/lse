@@ -120,7 +120,7 @@ namespace LinkShareEasyADO
         /// </summary>
         /// <param name="numericTokenId"></param>
         /// <returns></returns>
-        public NumericToken SetUsed(long numericTokenId)
+        public NumericToken SetUsed(long numericTokenId, bool used)
         {
             NumericToken nt = Find(numericTokenId);
 
@@ -129,8 +129,9 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "UPDATE NumericTokens SET Used = @1 WHERE NumericTokenId = @1";
+                cmd.CommandText = "UPDATE NumericTokens SET Used = @2 WHERE NumericTokenId = @1";
                 cmd.Parameters.AddWithValue("@1", numericTokenId);
+                cmd.Parameters.AddWithValue("@2", used);
                 cmd.ExecuteNonQuery();
             }
 
