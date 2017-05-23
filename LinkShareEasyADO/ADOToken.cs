@@ -9,27 +9,46 @@ namespace LinkShareEasyADO
 {
     public class ADOToken
     {
+        /// <summary>
+        /// Finds a valid token.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public Token FindValid(String token)
         { 
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
-                cmd.CommandText = "SELECT TOP 1 TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForDurationSeconds] JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId FROM Tokens WHERE IsExpired = @1";
+                cmd.CommandText = "SELECT TOP 1 TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForDurationSeconds] FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE IsExpired = @1 AND TokenText = @2";
                 cmd.Parameters.AddWithValue("@1", false);
+                cmd.Parameters.AddWithValue("@2", token);
 
                 using (var reader = cmd.ExecuteReader())
                 {
-                    return new Token()
-                    { 
-                       TokenId = reader.GetInt32(reader.GetOrdinal("TokenId")) 
-                       , TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
-                       , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
-                       , ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId")) 
-                       , ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
-                       , IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
-                       , ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
-                    };
+                    if (reader.HasRows && reader.Read())
+                    {
+                        return new Token()
+                        {
+                            TokenId = reader.GetInt32(reader.GetOrdinal("TokenId"))
+                           ,
+                            TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
+                           ,
+                            TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
+                           ,
+                            ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId"))
+                           ,
+                            ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
+                           ,
+                            IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
+                           ,
+                            ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("Token '{0}' not found", token));
+                    }
                 }
             }
         }
@@ -40,24 +59,30 @@ namespace LinkShareEasyADO
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
-                cmd.CommandText = "SELECT TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForDurationSeconds] JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId FROM Tokens WHERE TokenId = @1";
+                cmd.CommandText = "SELECT TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS ValidForDurationSeconds FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE TokenId = @1";
                 cmd.Parameters.AddWithValue("@1", id);
 
                 using (var reader = cmd.ExecuteReader())
                 {
-                    return new Token()
-                    { 
-                       TokenId = reader.GetInt32(reader.GetOrdinal("TokenId")) 
-                       , TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
-                       , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
-                       , ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId")) 
-                       , ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
-                       , IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
-                       , ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
-                    };
+                    if (reader.HasRows && reader.Read())
+                    {
+                        return new Token()
+                        {
+                            TokenId = reader.GetInt32(reader.GetOrdinal("TokenId"))
+                           , TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
+                           , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
+                           , ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId"))
+                           , ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
+                           , IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
+                           , ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
+                        }; 
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("Token not found for id = {0}", id));
+                    }
                 }
-            }
-
+            } 
         }
 
         public Token Insert(Token token)
@@ -73,8 +98,9 @@ namespace LinkShareEasyADO
                 cmd.Parameters.AddWithValue("@3", token.ValidForDurationDimId);
                 cmd.Parameters.AddWithValue("@4", token.ValidForDuration);
                 cmd.Parameters.AddWithValue("@5", token.IsExpired);
+                int id = Convert.ToInt32(cmd.ExecuteScalar());
 
-                return Find(Convert.ToInt32(cmd.ExecuteScalar()));
+                return Find(id);
             }
         }
 

@@ -34,7 +34,8 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 LinkRequestId, RequestedOn, Token, Processed FROM LinkRequests";
+                cmd.CommandText = "SELECT TOP 1 LinkRequestId, RequestedOn, Token, Processed FROM LinkRequests WHERE LinkRequestId = @1";
+                cmd.Parameters.AddWithValue("@1", id);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.HasRows && reader.Read())

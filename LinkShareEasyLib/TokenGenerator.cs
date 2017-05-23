@@ -18,7 +18,7 @@ namespace LinkShareEasyLib
         /// <param name="linkHref"></param>
         /// <param name="requestedOn"></param>
         /// <returns></returns>
-        public IToken MakeNumeric(TokenRequest tokenRequest)
+        public Token MakeNumeric(TokenRequest tokenRequest)
         {
             //TODO: Read https://www.codeproject.com/Articles/690136/All-About-TransactionScope
             using (var ts = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions() { IsolationLevel = IsolationLevel.Serializable }))
@@ -31,18 +31,34 @@ namespace LinkShareEasyLib
                 ant.SetUsed(nt.NumericTokenId, true);
  
                 ADOToken at = new ADOToken();
+                ADOLinkShareEasyConfig alsec = new ADOLinkShareEasyConfig();
+                LinkShareEasyConfig lsec = alsec.Find();
+
+                //Insert token.
                 Token token = at.Insert(
                     new Token() 
                     {
                         TokenText = nt.TokenText
                         , TokenTypeId = tokenRequest.TokenTypeId
                         , IsExpired = false
-                        , ValidForDuration = new ADOLinkShareEasyConfig().Find().
+                        , ValidForDuration = lsec.DefaultDuration
+                        , ValidForDurationDimId = lsec.DefaultDurationDimId
+                        , ValidForDurationSeconds = lsec.DefaultDurationSeconds
                     });
 
                 ADOLink al = new ADOLink();
-                Link link = al.Insert(new Link() {LinkHref = tokenRequest.LinkHref, TokenId = tokenRequest.TokenId});
-                al.Insert(link);
+                //Insert link
+                Link link = al.Insert(new Link() 
+                {
+                    LinkHref = tokenRequest.LinkHref
+                    , TokenId = tokenRequest.TokenId
+                });
+
+                tokenRequest.LinkId = link.LinkId;
+                //Update token request
+
+                ADOTokenRequest atr = new ADOTokenRequest();
+                atr.UpdateLinkId(tokenRequest);
 
                 ts.Complete();
 

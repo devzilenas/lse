@@ -115,6 +115,35 @@ namespace LinkShareEasyADO
             } 
         }
 
+        public NumericToken FindByNumber(int n)
+        {
+            using (var c = Connections.GetConnections.GetConnection())
+            using (var cmd = c.CreateCommand())
+            {
+                c.Open();
+
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE NumericTokenN = @1";
+                cmd.Parameters.AddWithValue("@1", n);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows && reader.Read())
+                    {
+                        return new NumericToken()
+                        {
+                            NumericTokenId = reader.GetInt32(reader.GetOrdinal("NumericTokenId"))
+                            , NumericTokenN = reader.GetInt32(reader.GetOrdinal("NumericTokenN"))
+                            , Used = reader.GetBoolean(reader.GetOrdinal("Used"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception(String.Format("Numeric token '{0}' not found.", n));
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -136,6 +165,13 @@ namespace LinkShareEasyADO
             }
 
             return Find(numericTokenId);
+        }
+
+        public NumericToken SetUsed(String tokenText, bool used)
+        {
+            NumericToken nt = FindByNumber(Convert.ToInt32(tokenText));
+            SetUsed(nt.NumericTokenId, false);
+            return Find(nt.NumericTokenId);
         }
     }
 }

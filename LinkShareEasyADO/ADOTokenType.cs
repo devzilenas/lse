@@ -23,7 +23,10 @@ namespace LinkShareEasyADO
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
+                c.Open();
+
                 cmd.CommandText = "SELECT TokenTypeID, TokenTypeText FROM TokenTypes"; 
+
                 using (var reader = cmd.ExecuteReader())
                 while (reader.HasRows && reader.Read())
                 {

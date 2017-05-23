@@ -29,9 +29,30 @@ namespace LinkShareEasy
         protected void TextBox1_TextChanged(object sender, EventArgs e)
         {
             //Save request.
-            TokenRequest tokenRequest = new TokenRequest() { LinkHref = TextBox1.Text, RequestedOn = DateTime.Now, TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue), TokenTypeText = RadioButtonList1.SelectedItem.Text};
-            TokenFactory tf = new TokenFactory();
-            IToken    token = tf.GetToken(tokenRequest);
+            TokenRequest tokenRequest = new TokenRequest() 
+            {
+                LinkHref = TextBox1.Text
+                , RequestedOn = DateTime.Now
+                , TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
+                , TokenTypeText = RadioButtonList1.SelectedItem.Text 
+            };
+
+            //Save token request 
+            ADOTokenRequest atr = new ADOTokenRequest();
+            tokenRequest = atr.Insert(tokenRequest);
+ 
+            Token token;
+            switch (tokenRequest.TokenTypeText)
+            {
+                case "Numeric":
+                    token = new TokenGenerator().MakeNumeric(tokenRequest);
+                    break;
+                default:
+                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));                  
+            }
+
+            tokenRequest.TokenId = token.TokenId;
+            atr.UpdateTokenId(tokenRequest);
 
             //Next assign a token to this request.
             TextBox2.Text = token.TokenText;
@@ -71,7 +92,7 @@ namespace LinkShareEasy
             ADOTokenRequest atr = new ADOTokenRequest();
             TokenRequest tr = atr.FindFor(token);
             
-            bool expired = tr.RequestedOn.AddSeconds(token.ValidForDurationSeconds) >= DateTime.Now;
+            bool expired = tr.RequestedOn.AddSeconds(token.ValidForDurationSeconds) <= DateTime.Now;
             
             if (expired)
                 //Token request is too late.
@@ -89,7 +110,7 @@ namespace LinkShareEasy
                 {
                     case "Numeric":
                         ADONumericToken ant = new ADONumericToken();
-                        ant.SetUsed(token.TokenId, false);
+                        ant.SetUsed(token.TokenText, false);
                         break;
                     case "Alpha":
                         break;

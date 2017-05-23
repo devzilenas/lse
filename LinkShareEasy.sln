@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{E0D9D0F8-8664-4452-8B6C-15F72A59B191}"
 	ProjectSection(SolutionItems) = preProject
 		DBO\data\base.sql = DBO\data\base.sql
+		DBO\ClearForUse.sql = DBO\ClearForUse.sql
 		DBO\dbo.NumericToken.sql = DBO\dbo.NumericToken.sql
 		DBO\dbo.Table.Banners.sql = DBO\dbo.Table.Banners.sql
 		DBO\dbo.Table.LinkRequests.sql = DBO\dbo.Table.LinkRequests.sql
