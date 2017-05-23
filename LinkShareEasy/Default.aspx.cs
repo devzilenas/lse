@@ -12,11 +12,19 @@ namespace LinkShareEasy
 {
     public partial class _Default : Page
     {
+        protected void SetupClipBoard()
+        {
+            ClipBoardButton.Attributes.Add("data-clipboard-target", "#MainContent_TextBox2");
+
+        }
         protected void Page_Load(object sender, EventArgs e) 
         {
             TextBox1.Attributes.Add("placeholder", "Paste link here");
             LinkButton1.Attributes.Add("data-placement", "button");
             LinkButton1.Attributes.Add("type", "button");
+
+            SetupClipBoard();
+
 
             TextBox1.Focus();
         }
@@ -56,6 +64,9 @@ namespace LinkShareEasy
 
             //Next assign a token to this request.
             TextBox2.Text = token.TokenText;
+            TextBox2.Focus();
+
+            SetupClipBoard();
         }
 
         protected void RadioButtonList1_DataBound(object sender, EventArgs e)
@@ -116,7 +127,7 @@ namespace LinkShareEasy
                         break;
                 }
 
-                Response.Redirect(String.Format("Transfer.aspx?url={0}", Server.UrlEncode(tr.LinkHref)));
+                Response.Redirect(String.Format("Transfer.aspx?url2={0}", Server.UrlEncode(tr.LinkHref)));
                 return;
             } 
         } 

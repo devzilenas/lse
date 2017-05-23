@@ -37,6 +37,7 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+        <script src="Scripts/clipboard.js"></script>
 
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">

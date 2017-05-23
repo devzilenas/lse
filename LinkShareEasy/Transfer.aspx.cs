@@ -19,7 +19,15 @@ namespace LinkShareEasy
         protected void AdRotator_AdCreated(object sender, AdCreatedEventArgs e)
         {
             ADOLinkShareEasyConfig alsec = new ADOLinkShareEasyConfig();
-            Response.AddHeader("REFRESH", String.Format("{0:d};URL={1}", alsec.Find().TransferAfterDuration, Request.Params["url"]));
+
+            //Let's add http if not present.
+            UriBuilder ub = new UriBuilder(Server.UrlDecode(Request.Params["url2"]));
+            if (String.IsNullOrEmpty(ub.Scheme))
+            {
+                ub.Scheme = "http";
+            }
+
+            Response.AddHeader("REFRESH", String.Format("{0:d};url={1}", alsec.Find().TransferAfterSeconds, ub.Uri));
         }
     }
 }
