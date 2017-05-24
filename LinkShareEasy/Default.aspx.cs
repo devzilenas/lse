@@ -12,20 +12,21 @@ namespace LinkShareEasy
 {
     public partial class _Default : Page
     {
-        protected void SetupClipBoard()
-        {
-            ClipBoardButton.Attributes.Add("data-clipboard-target", "#MainContent_TextBox2");
+        /// <summary>
+        /// Clipboard setup.
+        /// </summary>
+        private void SetupClipBoard() { ClipBoardButton.Attributes.Add("data-clipboard-target", "#MainContent_TextBox2"); }
 
-        }
-        protected void Page_Load(object sender, EventArgs e) 
+        protected void Page_Load(object sender, EventArgs e)
         {
             TextBox1.Attributes.Add("placeholder", "Paste link here");
             LinkButton1.Attributes.Add("data-placement", "button");
             LinkButton1.Attributes.Add("type", "button");
 
+            //Make clipboard functionality work
             SetupClipBoard();
 
-
+            //Focus to the link input box.
             TextBox1.Focus();
         }
 
@@ -36,19 +37,28 @@ namespace LinkShareEasy
         /// <param name="e"></param>
         protected void TextBox1_TextChanged(object sender, EventArgs e)
         {
+
+            if (!Page.IsValid)
+            {
+                //Uri validator must be passed to pass
+                return;
+            }
             //Save request.
-            TokenRequest tokenRequest = new TokenRequest() 
+            TokenRequest tokenRequest = new TokenRequest()
             {
                 LinkHref = TextBox1.Text
-                , RequestedOn = DateTime.Now
-                , TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
-                , TokenTypeText = RadioButtonList1.SelectedItem.Text 
+                ,
+                RequestedOn = DateTime.Now
+                ,
+                TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
+                ,
+                TokenTypeText = RadioButtonList1.SelectedItem.Text
             };
 
             //Save token request 
             ADOTokenRequest atr = new ADOTokenRequest();
             tokenRequest = atr.Insert(tokenRequest);
- 
+
             Token token;
             switch (tokenRequest.TokenTypeText)
             {
@@ -56,7 +66,7 @@ namespace LinkShareEasy
                     token = new TokenGenerator().MakeNumeric(tokenRequest);
                     break;
                 default:
-                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));                  
+                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
             }
 
             tokenRequest.TokenId = token.TokenId;
@@ -80,14 +90,14 @@ namespace LinkShareEasy
 
             LinkRequest lr = alr.Insert(
                 new LinkRequest()
-            { 
+            {
                 RequestedOn = DateTime.Now,
-                Token = TextBox3.Text                
+                Token = TextBox3.Text
             });
 
             //Get a link for the token.
-                //Let's get token
-            ADOToken at = new ADOToken(); 
+            //Let's get token
+            ADOToken at = new ADOToken();
             Token token = at.FindValid(lr.Token);
 
             if (token == null || token.IsExpired)
@@ -97,22 +107,22 @@ namespace LinkShareEasy
             }
 
             ADOTokenType att = new ADOTokenType();
-            TokenType tt = att.ById(token.TokenTypeId); 
+            TokenType tt = att.ById(token.TokenTypeId);
 
             //Now get Token request for this token.
             ADOTokenRequest atr = new ADOTokenRequest();
             TokenRequest tr = atr.FindFor(token);
-            
+
             bool expired = tr.RequestedOn.AddSeconds(token.ValidForDurationSeconds) <= DateTime.Now;
-            
+
             if (expired)
-                //Token request is too late.
+            //Token request is too late.
             {
                 Response.Redirect("TokenExpired.aspx");
-                return; 
+                return;
             }
             else
-            { 
+            {
                 //Expire token
                 at.Expire(token);
 
@@ -129,7 +139,13 @@ namespace LinkShareEasy
 
                 Response.Redirect(String.Format("Transfer.aspx?url2={0}", Server.UrlEncode(tr.LinkHref)));
                 return;
-            } 
-        } 
+            }
+        }
+
+        protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            args.IsValid = Uri.IsWellFormedUriString(TextBox1.Text, UriKind.Absolute);
+        }
     }
+
 }
