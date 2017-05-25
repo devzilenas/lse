@@ -17,23 +17,47 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connections", "Connections\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkShareEasyADO", "LinkShareEasyADO\LinkShareEasyADO.csproj", "{A9E3AD3E-6D5F-42F5-84EC-FCDC6A4A4F85}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{E0D9D0F8-8664-4452-8B6C-15F72A59B191}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbo", "dbo", "{E0D9D0F8-8664-4452-8B6C-15F72A59B191}"
 	ProjectSection(SolutionItems) = preProject
+		DBO\data\.english_words.txt.un~ = DBO\data\.english_words.txt.un~
 		DBO\data\base.sql = DBO\data\base.sql
 		DBO\ClearForUse.sql = DBO\ClearForUse.sql
+		DBO\data\dbo.Banners.data.sql = DBO\data\dbo.Banners.data.sql
+		DBO\data\dbo.DurationDim.data.sql = DBO\data\dbo.DurationDim.data.sql
+		DBO\dbo.EnglishWords.data.sql = DBO\dbo.EnglishWords.data.sql
+		DBO\data\dbo.EnglishWords.data.sql = DBO\data\dbo.EnglishWords.data.sql
+		DBO\data\dbo.EnglishWordTokens.data.sql = DBO\data\dbo.EnglishWordTokens.data.sql
+		DBO\data\dbo.LinkShareEasyConfig.data.sql = DBO\data\dbo.LinkShareEasyConfig.data.sql
 		DBO\dbo.NumericToken.sql = DBO\dbo.NumericToken.sql
 		DBO\dbo.Table.Banners.sql = DBO\dbo.Table.Banners.sql
+		DBO\dbo.Table.DurationDim.sql = DBO\dbo.Table.DurationDim.sql
+		DBO\dbo.Table.EnglishWords.sql = DBO\dbo.Table.EnglishWords.sql
+		DBO\dbo.Table.EnglishWordTokens.sql = DBO\dbo.Table.EnglishWordTokens.sql
 		DBO\dbo.Table.LinkRequests.sql = DBO\dbo.Table.LinkRequests.sql
 		DBO\dbo.Table.Links.sql = DBO\dbo.Table.Links.sql
+		DBO\dbo.Table.LinkShareEasyConfig.sql = DBO\dbo.Table.LinkShareEasyConfig.sql
 		DBO\dbo.Table.NumericToken.sql = DBO\dbo.Table.NumericToken.sql
+		DBO\dbo.Table.NumericTokens.sql = DBO\dbo.Table.NumericTokens.sql
 		DBO\dbo.Table.SponsorBanners.sql = DBO\dbo.Table.SponsorBanners.sql
 		DBO\dbo.Table.Sponsors.sql = DBO\dbo.Table.Sponsors.sql
 		DBO\dbo.Table.TokenRequest.sql = DBO\dbo.Table.TokenRequest.sql
+		DBO\dbo.Table.TokenRequests.sql = DBO\dbo.Table.TokenRequests.sql
 		DBO\dbo.Table.Tokens.sql = DBO\dbo.Table.Tokens.sql
+		DBO\dbo.Table.TokenTypes.sql = DBO\dbo.Table.TokenTypes.sql
+		DBO\dbo.Table.TokenTypesConfiguration.sql = DBO\dbo.Table.TokenTypesConfiguration.sql
 		DBO\dbo.Table.TokenUsage.sql = DBO\dbo.Table.TokenUsage.sql
+		DBO\dbo.Table.UnicodeTokens.sql = DBO\dbo.Table.UnicodeTokens.sql
 		DBO\dbo.Tokens.sql = DBO\dbo.Tokens.sql
 		DBO\dbo.TokensUsage.sql = DBO\dbo.TokensUsage.sql
+		DBO\data\dbo.TokenTypes.data.sql = DBO\data\dbo.TokenTypes.data.sql
+		DBO\data\dbo.TokenTypesConfiguration.data.sql = DBO\data\dbo.TokenTypesConfiguration.data.sql
+		DBO\data\english_words.txt = DBO\data\english_words.txt
+		DBO\data\english_words.txt~ = DBO\data\english_words.txt~
+		DBO\data\english_words.xlsx = DBO\data\english_words.xlsx
 		DBO\GenerateNumericTokens.sql = DBO\GenerateNumericTokens.sql
+		DBO\data\GenerateNumericTokens.sql = DBO\data\GenerateNumericTokens.sql
+		DBO\data\GenerateTokenTypes.sql = DBO\data\GenerateTokenTypes.sql
+		DBO\UnicodeTokens.sql = DBO\UnicodeTokens.sql
 	EndProjectSection
 EndProject
 Global

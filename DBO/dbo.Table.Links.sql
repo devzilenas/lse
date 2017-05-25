@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Links] (
-    [LinkID]   INT            NOT NULL IDENTITY,
+    [LinkId]   INT            IDENTITY (1, 1) NOT NULL,
     [LinkHref] NVARCHAR (MAX) NULL,
-    [TokenID]  INT            NULL,
-    PRIMARY KEY CLUSTERED ([LinkID] ASC)
+    [TokenId]  INT            NULL,
+    PRIMARY KEY CLUSTERED ([LinkId] ASC)
 );
 

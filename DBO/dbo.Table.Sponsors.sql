@@ -1,5 +1,6 @@
-﻿CREATE TABLE [dbo].[Sponsors]
-(
-	[SponsorID] INT NOT NULL PRIMARY KEY, 
-    [SponsorName] VARCHAR(50) NULL
-)
+﻿CREATE TABLE [dbo].[Sponsors] (
+    [SponsorId]   INT          IDENTITY (1, 1) NOT NULL,
+    [SponsorName] VARCHAR (50) NULL,
+    PRIMARY KEY CLUSTERED ([SponsorId] ASC)
+);
+

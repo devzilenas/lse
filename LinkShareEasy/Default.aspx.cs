@@ -28,72 +28,20 @@ namespace LinkShareEasy
 
             //Focus to the link input box.
             TextBox1.Focus();
+            ClipBoardButtonIsDisabledWhenEmpty(((TextBox)TextBox1));
+            ShowDefaultDurationValues();
         }
 
-        /// <summary>
-        /// Once the user enters a link generate a token.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-            if (!Page.IsValid)
-            {
-                //Uri validator must be passed to pass
-                return;
-            }
-            //Save request.
-            TokenRequest tokenRequest = new TokenRequest()
-            {
-                LinkHref = TextBox1.Text
-                ,
-                RequestedOn = DateTime.Now
-                ,
-                TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
-                ,
-                TokenTypeText = RadioButtonList1.SelectedItem.Text
-            };
-
-            //Save token request 
-            ADOTokenRequest atr = new ADOTokenRequest();
-            tokenRequest = atr.Insert(tokenRequest);
-
-            Token token;
-            switch (tokenRequest.TokenTypeText)
-            {
-                case "Numeric":
-                    token = new TokenGenerator().MakeNumeric(tokenRequest);
-                    break;
-                default:
-                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
-            }
-
-            tokenRequest.TokenId = token.TokenId;
-            atr.UpdateTokenId(tokenRequest);
-
-            //Next assign a token to this request.
-            TextBox2.Text = token.TokenText;
-            TextBox2.Focus();
-
-            SetupClipBoard();
-        }
-
-        protected void RadioButtonList1_DataBound(object sender, EventArgs e)
-        {
-            RadioButtonList1.SelectedIndex = 0;
-        }
-
-        protected void LinkButton2_Click(object sender, EventArgs e)
+        private void TokenReceived()
         {
             ADOLinkRequest alr = new ADOLinkRequest();
 
             LinkRequest lr = alr.Insert(
                 new LinkRequest()
-            {
-                RequestedOn = DateTime.Now,
-                Token = TextBox3.Text
-            });
+                {
+                    RequestedOn = DateTime.Now,
+                    Token = TextBox3.Text
+                });
 
             //Get a link for the token.
             //Let's get token
@@ -142,9 +90,98 @@ namespace LinkShareEasy
             }
         }
 
+        private void LinkReceived()
+        {
+            if (!Page.IsValid)
+            {
+                //Uri validator must be passed to pass
+                return;
+            }
+            //Save request.
+            TokenRequest tokenRequest = new TokenRequest()
+            {
+                LinkHref = TextBox1.Text
+                ,
+                RequestedOn = DateTime.Now
+                ,
+                TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
+                ,
+                TokenTypeText = RadioButtonList1.SelectedItem.Text
+            };
+
+            //Save token request 
+            ADOTokenRequest atr = new ADOTokenRequest();
+            tokenRequest = atr.Insert(tokenRequest);
+
+            Token token;
+            switch (tokenRequest.TokenTypeText)
+            {
+                case "Numeric":
+                    token = new TokenGenerator().MakeNumeric(tokenRequest);
+                    break;
+                default:
+                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
+            }
+
+            tokenRequest.TokenId = token.TokenId;
+            atr.UpdateTokenId(tokenRequest);
+
+            //Next assign a token to this request.
+            TextBox2.Text = token.TokenText;
+            TextBox2.Focus();
+
+            SetupClipBoard();
+
+        }
+        /// <summary>
+        /// Once the user enters a link generate a token.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            LinkReceived();
+
+            //Clear text box 
+            TextBox3.Text = "";
+        }
+
+        protected void RadioButtonList1_DataBound(object sender, EventArgs e)
+        {
+            RadioButtonList1.SelectedIndex = 0;
+        }
+
+        protected void LinkButton2_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
+            {
+                TokenReceived();
+            } 
+        }
+
         protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args)
         {
             args.IsValid = Uri.IsWellFormedUriString(TextBox1.Text, UriKind.Absolute);
+        }
+
+        protected void TextBox2_TextChanged(object sender, EventArgs e)
+        {
+            ClipBoardButtonIsDisabledWhenEmpty(((TextBox)sender));
+        }
+
+        private void ClipBoardButtonIsDisabledWhenEmpty(TextBox tb)
+        { 
+            //CONSTRAINT: Enable button "Copy" only when has token.
+            ClipBoardButton.Enabled = !String.IsNullOrEmpty(tb.Text);            
+        }
+
+        private void ShowDefaultDurationValues()
+        {
+            ADOLinkShareEasyConfig lse = new ADOLinkShareEasyConfig();
+            LinkShareEasyConfig lsec = lse.Find();
+            DefaultDuration1.InnerText = Convert.ToString(lsec.DefaultDuration);
+            DurationDim dd = new ADODurationDim().Find(lsec.DefaultDurationDimId);
+            DefaultDurationText.InnerText = dd.DurationDimName;
         }
     }
 

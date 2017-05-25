@@ -21,7 +21,7 @@ namespace LinkShareEasyLib
         public Token MakeNumeric(TokenRequest tokenRequest)
         {
             //TODO: Read https://www.codeproject.com/Articles/690136/All-About-TransactionScope
-            using (var ts = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions() { IsolationLevel = IsolationLevel.Serializable }))
+            using (var ts = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions() { IsolationLevel = IsolationLevel.ReadCommitted}))
             {
 
                 ADONumericToken ant = new ADONumericToken();
