@@ -46,6 +46,7 @@
     <Compile Include="ADOLinkRequest.cs" />
     <Compile Include="ADOLinkShareEasyConfig.cs" />
     <Compile Include="ADONumericToken.cs" />
+    <Compile Include="ADOTokenTypeConfiguration.cs" />
     <Compile Include="ADOTokenUsage.cs" />
     <Compile Include="ADOToken.cs" />
     <Compile Include="ADOTokenRequest.cs" />

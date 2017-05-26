@@ -8,7 +8,7 @@ namespace LinkShareEasyModel
 {
     public class TokenType
     {
-        public int TokenTypeID { get; set; }
+        public int TokenTypeId { get; set; }
         public String TokenTypeText { get; set; }
     }
 }

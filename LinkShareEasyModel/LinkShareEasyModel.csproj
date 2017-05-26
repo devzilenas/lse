@@ -50,6 +50,7 @@
     <Compile Include="Token.cs" />
     <Compile Include="TokenRequest.cs" />
     <Compile Include="TokenType.cs" />
+    <Compile Include="TokenTypeConfiguration.cs" />
     <Compile Include="TokenUsage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

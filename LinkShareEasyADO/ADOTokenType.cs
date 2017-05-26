@@ -11,7 +11,7 @@ namespace LinkShareEasyADO
     { 
         public TokenType ById(int id)
         {
-            return All().First(t => t.TokenTypeID == id);
+            return All().First(t => t.TokenTypeId == id);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TokenTypeID, TokenTypeText FROM TokenTypes"; 
+                cmd.CommandText = "SELECT TokenTypeId, TokenTypeText FROM TokenTypes"; 
 
                 using (var reader = cmd.ExecuteReader())
                 while (reader.HasRows && reader.Read())
@@ -33,7 +33,7 @@ namespace LinkShareEasyADO
                     yield return 
                         new TokenType
                         { 
-                            TokenTypeID = reader.GetInt32(reader.GetOrdinal("TokenTypeID"))
+                            TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
                             , TokenTypeText = reader.GetString(reader.GetOrdinal("TokenTypeText"))
                         }; 
                 }

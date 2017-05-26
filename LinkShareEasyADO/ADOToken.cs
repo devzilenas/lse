@@ -20,7 +20,7 @@ namespace LinkShareEasyADO
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
-                cmd.CommandText = "SELECT TOP 1 TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForDurationSeconds] FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE IsExpired = @1 AND TokenText = @2";
+                cmd.CommandText = "SELECT TOP 1 TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForSeconds] FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE IsExpired = @1 AND TokenText = @2";
                 cmd.Parameters.AddWithValue("@1", false);
                 cmd.Parameters.AddWithValue("@2", token);
 
@@ -42,7 +42,7 @@ namespace LinkShareEasyADO
                            ,
                             IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
                            ,
-                            ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
+                            ValidForSeconds = reader.GetInt32(reader.GetOrdinal("ValidForSeconds"))
                         };
                     }
                     else
@@ -59,7 +59,7 @@ namespace LinkShareEasyADO
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
-                cmd.CommandText = "SELECT TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS ValidForDurationSeconds FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE TokenId = @1";
+                cmd.CommandText = "SELECT TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS ValidForSeconds FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE TokenId = @1";
                 cmd.Parameters.AddWithValue("@1", id);
 
                 using (var reader = cmd.ExecuteReader())
@@ -74,7 +74,7 @@ namespace LinkShareEasyADO
                            , ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId"))
                            , ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
                            , IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
-                           , ValidForDurationSeconds = reader.GetInt32(reader.GetOrdinal("ValidForDurationSeconds"))
+                           , ValidForSeconds = reader.GetInt32(reader.GetOrdinal("ValidForSeconds"))
                         }; 
                     }
                     else
@@ -85,7 +85,7 @@ namespace LinkShareEasyADO
             } 
         }
 
-        public Token Insert(Token token)
+        public Token Insert(IToken token)
         {
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())

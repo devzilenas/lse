@@ -4,8 +4,8 @@
     <script src="Scripts/setupclipboard.js" type="text/javascript"></script>
     <h2>Generate token</h2>
     <p>Link share easy service let's you share a link with anyone instantly.</p>
-    <p>The token you get will last for <span runat="server" id="DefaultDuration1"></span> <span runat="server" id="DefaultDurationText"></span>. After 10 minutes the token will expire. You will have to get a new one.</p>
-    
+    <p>The token you get will last for <span runat="server" id="DefaultDuration1"></span><span runat="server" id="DefaultDurationText"></span>. After 10 minutes the token will expire. You will have to get a new one.</p>
+
     <div class="row">
         <div class="col-md-4">
             <div class="input-group">
@@ -23,28 +23,28 @@
                 </span>
             </div>
         </div>
-    </div> 
+    </div>
 
-    <div class="row"> 
+    <div class="row">
         <div class="col-md-1">
-            <a class="btn btn-link btn-xs" data-toggle="collapse" href="#options" aria-expanded="false" aria-controls="options">?</a>
+            <a class="btn btn-link btn-m" data-toggle="collapse" href="#options" aria-expanded="false" aria-controls="options">🔧</a>
         </div>
     </div>
 
     <div class="collapse" id="options">
         <div class="row">
-            <div class="col-md-6"> 
+            <div class="col-md-6">
                 <p>Options for token</p>
-            </div> 
-        </div>
-    <div class="row">
-        <div class="col-md-6">           
-                <asp:RadioButtonList ToolTip="Choose token type" ID="RadioButtonList1" runat="server" DataSourceID="SqlDataSource2" DataTextField="TokenTypeText" DataValueField="TokenTypeId" OnDataBound="RadioButtonList1_DataBound">
-                </asp:RadioButtonList>
-                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" SelectCommand="SELECT TokenTypes.TokenTypeId, TokenTypeText FROM [TokenTypes] JOIN TokenTypesConfiguration ON TokenTypesConfiguration.TokenTypeId = TokenTypes.TokenTypeId WHERE TokenTypesConfiguration.Enabled = 1"></asp:SqlDataSource>
             </div>
         </div>
-    </div> 
+        <div class="row">
+            <div class="col-md-6">
+                <asp:RadioButtonList ToolTip="Choose token type" ID="RadioButtonList1" runat="server" DataSourceID="SqlDataSource2" DataTextField="TokenTypeText" DataValueField="TokenTypeId" OnDataBound="RadioButtonList1_DataBound">
+                </asp:RadioButtonList>
+                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" SelectCommand="SELECT TokenTypes.TokenTypeId, TokenTypeText FROM [TokenTypes] JOIN TokenTypeConfiguration ON TokenTypeConfiguration.TokenTypeId = TokenTypes.TokenTypeId WHERE TokenTypeConfiguration.Enabled = 1"></asp:SqlDataSource>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-6">

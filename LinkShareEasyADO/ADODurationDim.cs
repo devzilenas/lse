@@ -60,5 +60,11 @@ namespace LinkShareEasyADO
                 }
             }
         }
+
+        public int GetSeconds(int id, int duration)
+        {
+            DurationDim dd = Find(id);
+            return dd.DurationDimSeconds * duration;
+        }
     }
 }

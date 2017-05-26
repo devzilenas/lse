@@ -61,7 +61,7 @@ namespace LinkShareEasy
             ADOTokenRequest atr = new ADOTokenRequest();
             TokenRequest tr = atr.FindFor(token);
 
-            bool expired = tr.RequestedOn.AddSeconds(token.ValidForDurationSeconds) <= DateTime.Now;
+            bool expired = tr.RequestedOn.AddSeconds(token.ValidForSeconds) <= DateTime.Now;
 
             if (expired)
             //Token request is too late.
@@ -101,37 +101,31 @@ namespace LinkShareEasy
             TokenRequest tokenRequest = new TokenRequest()
             {
                 LinkHref = TextBox1.Text
-                ,
-                RequestedOn = DateTime.Now
-                ,
-                TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
-                ,
-                TokenTypeText = RadioButtonList1.SelectedItem.Text
+                , RequestedOn = DateTime.Now
+                , TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
+                , TokenTypeText = RadioButtonList1.SelectedItem.Text
             };
-
             //Save token request 
             ADOTokenRequest atr = new ADOTokenRequest();
             tokenRequest = atr.Insert(tokenRequest);
 
-            Token token;
-            switch (tokenRequest.TokenTypeText)
-            {
-                case "Numeric":
-                    token = new TokenGenerator().MakeNumeric(tokenRequest);
-                    break;
-                default:
-                    throw new NotImplementedException(String.Format("Token type {0}", tokenRequest.TokenTypeText));
-            }
+            //Use token generator
+            IToken token = new TokenGenerator().GetTokenForStore(tokenRequest);
+            
+            //Now save this token to the tokens list.
+            ADOToken at = new ADOToken();
+            token = at.Insert(token);
 
+            //Next assign a token to this request.
+            //Update token id for token request.
             tokenRequest.TokenId = token.TokenId;
             atr.UpdateTokenId(tokenRequest);
 
-            //Next assign a token to this request.
+            //Set up the view
             TextBox2.Text = token.TokenText;
             TextBox2.Focus();
 
             SetupClipBoard();
-
         }
         /// <summary>
         /// Once the user enters a link generate a token.

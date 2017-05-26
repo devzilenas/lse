@@ -33,15 +33,16 @@ namespace LinkShareEasyADO
         /// </summary>
         /// <param name="numericToken"></param>
         /// <returns></returns>
-        public bool IsAvailable(NumericToken numericToken)
+        public bool IsAvailable(IToken token)
         {
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 NumericTokenId FROM NumericTokens WHERE Used = @1";
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId FROM NumericTokens WHERE NumericTokenId = @2 AND Used = @1";
                 cmd.Parameters.AddWithValue("@1", false);
+                cmd.Parameters.AddWithValue("@2", token.TokenId);
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -51,21 +52,26 @@ namespace LinkShareEasyADO
             throw new Exception("Numeric token find operation failed.");
         }
 
+        public IToken Take()
+        {
+            NumericToken nt = GetAvailable();
+            return SetUsed(nt, true);
+        }
+
         /// <summary>
         /// Returns available numeric token.
         /// </summary>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public NumericToken GetAvailable(int limit)
+        public NumericToken GetAvailable()
         {
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP (@2) NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE Used = @1";
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE Used = @1";
                 cmd.Parameters.AddWithValue("@1", false);
-                cmd.Parameters.AddWithValue("@2", limit);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.HasRows)
@@ -142,6 +148,16 @@ namespace LinkShareEasyADO
                     }
                 }
             }
+        }
+
+        public IToken SetUsed(IToken token, bool used)
+        {
+            return SetUsed(token.TokenId, used);
+        }
+
+        public NumericToken SetUsed(NumericToken nt, bool used)
+        {
+            return SetUsed(nt.NumericTokenId, used);
         }
 
         /// <summary>

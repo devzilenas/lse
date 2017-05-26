@@ -12,6 +12,41 @@ namespace LinkShareEasyLib
 {
     public class TokenGenerator
     {
+        private static List<TokenService> TokenServices 
+            = new List<TokenService>(new TokenService[]
+        { 
+            new NumericTokenService()
+            //, new EnglishWordTokenService()
+        });
+
+        /// <summary>
+        /// Gets token service for the token request.
+        /// </summary>
+        /// <param name="tokenRequest"></param>
+        /// <returns></returns>
+        private TokenService GetTokenService(TokenRequest tokenRequest) { return TokenServices.Single(t => t.TokenType.TokenTypeText == tokenRequest.TokenTypeText); }
+
+        /// <summary>
+        /// Gets a token that is prepared for storing.
+        /// </summary>
+        public IToken GetTokenForStore(TokenRequest tokenRequest)
+        {
+            //Take token from the service.
+            IToken serviceToken = GetTokenService(tokenRequest).TakeToken();
+
+            ADOTokenTypeConfiguration attc = new ADOTokenTypeConfiguration();
+            TokenTypeConfiguration ttc = attc.Find(serviceToken.TokenType);
+
+            ADODurationDim add = new ADODurationDim();
+            //We must add duration data to the token since service does not.
+            IToken token = new Token(serviceToken) 
+                    {
+                        ValidForDuration = ttc.DefaultValidForDuration
+                        , ValidForDurationDimId = ttc.DefaultValidForDurationDimId
+                    };
+            return token;
+        }
+
         /// <summary>
         /// Makes numeric token for a link.
         /// </summary>
@@ -43,7 +78,7 @@ namespace LinkShareEasyLib
                         , IsExpired = false
                         , ValidForDuration = lsec.DefaultDuration
                         , ValidForDurationDimId = lsec.DefaultDurationDimId
-                        , ValidForDurationSeconds = lsec.DefaultDurationSeconds
+                        , ValidForSeconds = lsec.DefaultDurationSeconds
                     });
 
                 ADOLink al = new ADOLink();
