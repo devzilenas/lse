@@ -61,7 +61,7 @@ namespace LinkShareEasyLib
 
                 ADONumericToken ant = new ADONumericToken();
                 //1. Take available numeric token.
-                NumericToken nt = ant.GetAvailable(1);
+                NumericToken nt = ant.GetAvailable();
                 //2. Set numeric token used so nobody could use it again.
                 ant.SetUsed(nt.NumericTokenId, true);
  
