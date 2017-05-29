@@ -3,11 +3,6 @@ GO
 
 /****** Object:  Database [LinkShareEasy]    Script Date: 2017-05-25 14:44:23 ******/
 CREATE DATABASE [LinkShareEasy]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'LinkShareEasy', FILENAME = N'C:\Program Files (x86)\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\LinkShareEasy.mdf' , SIZE = 45056KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
- LOG ON 
-( NAME = N'LinkShareEasy_log', FILENAME = N'C:\Program Files (x86)\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\LinkShareEasy_log.ldf' , SIZE = 353216KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
 
 ALTER DATABASE [LinkShareEasy] SET COMPATIBILITY_LEVEL = 120
