@@ -19,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbo", "dbo", "{E0D9D0F8-866
 	ProjectSection(SolutionItems) = preProject
 		DBO\data\.english_words.txt.un~ = DBO\data\.english_words.txt.un~
 		DBO\data\base.sql = DBO\data\base.sql
-		DBO\ClearForUse.sql = DBO\ClearForUse.sql
 		DBO\data\dbo.Banners.data.sql = DBO\data\dbo.Banners.data.sql
 		DBO\data\dbo.DurationDim.data.sql = DBO\data\dbo.DurationDim.data.sql
 		DBO\dbo.EnglishWords.data.sql = DBO\dbo.EnglishWords.data.sql
@@ -55,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbo", "dbo", "{E0D9D0F8-866
 		DBO\GenerateNumericTokens.sql = DBO\GenerateNumericTokens.sql
 		DBO\data\GenerateNumericTokens.sql = DBO\data\GenerateNumericTokens.sql
 		DBO\data\GenerateTokenTypes.sql = DBO\data\GenerateTokenTypes.sql
+		ResetBase.sql = ResetBase.sql
 		DBO\script.sql = DBO\script.sql
 		DBO\UnicodeTokens.sql = DBO\UnicodeTokens.sql
 	EndProjectSection

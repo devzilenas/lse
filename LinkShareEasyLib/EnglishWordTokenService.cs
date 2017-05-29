@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LinkShareEasyADO;
+using LinkShareEasyModel;
 
 namespace LinkShareEasyLib
 {
@@ -12,28 +14,32 @@ namespace LinkShareEasyLib
         {
             get
             {
-                throw new NotImplementedException();
+                return new TokenType() { TokenTypeId = 3, TokenTypeText = "English word" };
             }
         }
 
         protected override LinkShareEasyModel.IToken GetToken()
         {
-            throw new NotImplementedException();
+            ADOEnglishWord aew = new ADOEnglishWord();
+            IToken token = aew.GetAvailable();
+            return token; 
         }
 
         protected override LinkShareEasyModel.IToken SetUsed(LinkShareEasyModel.IToken token, bool used)
         {
-            throw new NotImplementedException();
+            ADOEnglishWord aew = new ADOEnglishWord();
+            return aew.SetUsed(token.TokenText, true);
         }
 
         protected override LinkShareEasyModel.IToken UseToken(LinkShareEasyModel.IToken token)
         {
-            throw new NotImplementedException();
+            return SetUsed(token, true);
         }
 
         protected override bool IsUsed(LinkShareEasyModel.IToken token)
         {
-            throw new NotImplementedException();
+            ADOEnglishWord aew = new ADOEnglishWord();
+            return aew.IsAvailable(token);
         }
     }
        

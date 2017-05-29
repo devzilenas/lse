@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ADOBanner.cs" />
     <Compile Include="ADODurationDim.cs" />
+    <Compile Include="ADOEnglishWord.cs" />
     <Compile Include="ADOLink.cs" />
     <Compile Include="ADOLinkRequest.cs" />
     <Compile Include="ADOLinkShareEasyConfig.cs" />

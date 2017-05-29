@@ -40,9 +40,9 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 NumericTokenId FROM NumericTokens WHERE NumericTokenId = @2 AND Used = @1";
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId FROM NumericTokens WHERE NumericTokenN = @2 AND Used = @1";
                 cmd.Parameters.AddWithValue("@1", false);
-                cmd.Parameters.AddWithValue("@2", token.TokenId);
+                cmd.Parameters.AddWithValue("@2", Convert.ToInt32(token.TokenText));
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -70,8 +70,9 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE Used = @1";
+                cmd.CommandText = "SELECT TOP 1 NumericTokenId, NumericTokenN, Used FROM NumericTokens WHERE Used = @1 ORDER BY NEWID()";
                 cmd.Parameters.AddWithValue("@1", false);
+
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.HasRows)
@@ -150,9 +151,9 @@ namespace LinkShareEasyADO
             }
         }
 
-        public IToken SetUsed(IToken token, bool used)
+        public NumericToken SetUsed(String tokenText, bool used)
         {
-            return SetUsed(token.TokenId, used);
+            return SetUsed(FindByNumber(Convert.ToInt32(tokenText)), used);
         }
 
         public NumericToken SetUsed(NumericToken nt, bool used)
@@ -181,13 +182,6 @@ namespace LinkShareEasyADO
             }
 
             return Find(numericTokenId);
-        }
-
-        public NumericToken SetUsed(String tokenText, bool used)
-        {
-            NumericToken nt = FindByNumber(Convert.ToInt32(tokenText));
-            SetUsed(nt.NumericTokenId, false);
-            return Find(nt.NumericTokenId);
         }
     }
 }

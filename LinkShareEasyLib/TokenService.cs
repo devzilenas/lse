@@ -17,7 +17,8 @@ namespace LinkShareEasyLib
         public IToken TakeToken()
         {
             IToken token = GetToken();
-            if (IsAvailable(token)) { UseToken(token); }
+            token.TokenType = TokenType;
+            UseToken(token);
             return token;
         }
 

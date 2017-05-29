@@ -10,5 +10,15 @@ namespace LinkShareEasyModel
     {
         public int TokenTypeId { get; set; }
         public String TokenTypeText { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return TokenTypeText == ((TokenType)obj).TokenTypeText;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

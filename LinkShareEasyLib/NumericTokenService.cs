@@ -10,7 +10,6 @@ namespace LinkShareEasyLib
 {
     public class NumericTokenService : TokenService
     {
-
         public override LinkShareEasyModel.TokenType TokenType
         {
             get
@@ -27,15 +26,15 @@ namespace LinkShareEasyLib
         {
             ADONumericToken ant = new ADONumericToken();
             IToken token = ant.GetAvailable();
-            //Add token type 
-            token.TokenType = TokenType;
+            ////Add token type 
+            //token.TokenType = TokenType;
             return token;
         }
 
         protected override LinkShareEasyModel.IToken SetUsed(LinkShareEasyModel.IToken token, bool used)
         { 
             ADONumericToken ant = new ADONumericToken();
-            return ant.SetUsed(token, used);
+            return ant.SetUsed(token.TokenText, used);
         }
 
         protected override LinkShareEasyModel.IToken UseToken(LinkShareEasyModel.IToken token)

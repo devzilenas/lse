@@ -14,13 +14,19 @@ namespace LinkShareEasyADO
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public Token FindValid(String token)
+        public Token FindUnexpired(String token)
         { 
             using (var c = Connections.GetConnections.GetConnection())
             using (var cmd = c.CreateCommand())
             {
                 c.Open();
-                cmd.CommandText = "SELECT TOP 1 TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForSeconds] FROM Tokens JOIN DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId WHERE IsExpired = @1 AND TokenText = @2";
+                cmd.CommandText = 
+                @"SELECT TOP 1 
+                               TokenId, TokenText, TokenTypeId, ValidForDurationDimId, ValidForDuration, IsExpired, ValidForDuration*DurationDim.DurationDimSeconds AS [ValidForSeconds] 
+                  FROM         Tokens 
+                  JOIN         DurationDim ON DurationDim.DurationDimId = ValidForDurationDimId 
+                  WHERE        IsExpired = @1 AND TokenText = @2";
+
                 cmd.Parameters.AddWithValue("@1", false);
                 cmd.Parameters.AddWithValue("@2", token);
 
@@ -31,18 +37,12 @@ namespace LinkShareEasyADO
                         return new Token()
                         {
                             TokenId = reader.GetInt32(reader.GetOrdinal("TokenId"))
-                           ,
-                            TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
-                           ,
-                            TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
-                           ,
-                            ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId"))
-                           ,
-                            ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
-                           ,
-                            IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
-                           ,
-                            ValidForSeconds = reader.GetInt32(reader.GetOrdinal("ValidForSeconds"))
+                           , TokenText = reader.GetString(reader.GetOrdinal("TokenText"))
+                           , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
+                           , ValidForDurationDimId = reader.GetInt32(reader.GetOrdinal("ValidForDurationDimId"))
+                           , ValidForDuration = reader.GetInt32(reader.GetOrdinal("ValidForDuration"))
+                           , IsExpired = reader.GetBoolean(reader.GetOrdinal("IsExpired"))
+                           , ValidForSeconds = reader.GetInt32(reader.GetOrdinal("ValidForSeconds"))
                         };
                     }
                     else
@@ -118,5 +118,4 @@ namespace LinkShareEasyADO
             }
         }
     }
-
 }

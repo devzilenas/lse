@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Banner.cs" />
     <Compile Include="DurationDim.cs" />
+    <Compile Include="EnglishWordToken.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkRequest.cs" />
