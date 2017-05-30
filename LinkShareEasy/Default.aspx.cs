@@ -32,6 +32,21 @@ namespace LinkShareEasy
             TextBox1.Focus();
             ClipBoardButtonIsDisabledWhenEmpty(((TextBox)TextBox1));
             ShowDefaultDurationValues();
+            HideCopyTokenDiv();
+            OptionsButton.Attributes.Add("data-toggle", "collapse");
+            OptionsButton.Attributes.Add("aria-expanded", "false");
+            OptionsButton.Attributes.Add("aria-controls", "options");
+
+            TextBox3.Attributes.Add("placeholder", "Enter token...");
+
+            WhatIsIt1.Attributes.Add("data-toggle", "tooltip");
+            WhatIsIt1.Attributes.Add("data-html", "true");
+            WhatIsIt1.Attributes.Add("title", "Place token here.");
+        }
+
+        private void HideCopyTokenDiv()
+        {
+            CopyToken.Visible = !String.IsNullOrWhiteSpace(TextBox1.Text);
         }
 
         private void TokenReceived()

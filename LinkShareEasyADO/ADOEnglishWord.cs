@@ -85,7 +85,7 @@ namespace LinkShareEasyADO
                   FROM      EnglishWordTokens
                   WHERE     Used = @1
                   ORDER BY
-                            NEWID()"; //Random
+                            RAND()*EXP(WordLength) ASC --Random with longer going to the end further";
                 cmd.Parameters.AddWithValue("@1", false);
 
                 using (var reader = cmd.ExecuteReader())
