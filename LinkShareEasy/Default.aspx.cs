@@ -95,7 +95,7 @@ namespace LinkShareEasy
                     ts.ReturnToken(token);
                 }
 
-                trs.Complete();
+                trs.Complete(); 
                 Response.Redirect(
                     String.Format("Transfer.aspx?url2={0}", Server.UrlEncode(tr.LinkHref)));
 
