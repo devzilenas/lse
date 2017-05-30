@@ -17,6 +17,9 @@ namespace LinkShareEasyModel
         public int ValidForDuration { get; set; }
         public int ValidForSeconds { get; set; }
         public bool IsExpired { get; set; }
+
+        public bool SingleUse { get; set; }
+
         public TokenType TokenType
         {
             get { return new TokenType() { TokenTypeId = TokenTypeId }; }

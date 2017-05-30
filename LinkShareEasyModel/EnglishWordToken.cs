@@ -14,6 +14,8 @@ namespace LinkShareEasyModel
         public bool Used { get; set; }
         public bool IsExpired { get; set; }
 
+        public bool SingleUse { get; set; }
+
         public TokenType TokenType { get; set; }
         public int TokenTypeId { get; set; }
 

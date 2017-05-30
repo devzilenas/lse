@@ -15,7 +15,7 @@
         <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-btn">
-                    <asp:LinkButton ID="LinkButton1" OnClick="TextBox1_TextChanged" runat="server" CssClass="btn btn-default" CausesValidation="true" ValidationGroup="TokenRequest">1. Get token</asp:LinkButton>
+                    <asp:LinkButton ID="LinkButton1" OnClick="TextBox1_TextChanged" runat="server" CssClass="btn btn-default" CausesValidation="true" ValidationGroup="TokenRequest">Get token</asp:LinkButton>
                 </span>
                 <asp:TextBox CssClass="form-control" ID="TextBox1" runat="server" AutoPostBack="true" OnTextChanged="TextBox1_TextChanged" ValidationGroup="TokenRequest" CausesValidation="true"></asp:TextBox>
                 <span class="input-group-btn">
@@ -27,7 +27,7 @@
             <div class="input-group">
                 <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control" onclick="this.select();" ReadOnly="True" OnTextChanged="TextBox2_TextChanged"></asp:TextBox>
                 <span class="input-group-btn">
-                    <asp:Button runat="server" ID="ClipBoardButton" CssClass="btn btn-success clipboard-btn" Text=" &larr; 2. Copy token" />
+                    <asp:Button runat="server" ID="ClipBoardButton" CssClass="btn btn-success clipboard-btn" Text=" &larr; Copy token" />
                 </span>
             </div>
         </div>
@@ -44,6 +44,8 @@
                 <asp:RadioButtonList ToolTip="Choose token type" ID="RadioButtonList1" runat="server" DataSourceID="SqlDataSource2" DataTextField="TokenTypeText" DataValueField="TokenTypeId" OnDataBound="RadioButtonList1_DataBound">
                 </asp:RadioButtonList>
                 <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" SelectCommand="SELECT TokenTypes.TokenTypeId, TokenTypeText FROM [TokenTypes] JOIN TokenTypeConfiguration ON TokenTypeConfiguration.TokenTypeId = TokenTypes.TokenTypeId WHERE TokenTypeConfiguration.Enabled = 1"></asp:SqlDataSource>
+                <input runat="server" type="checkbox" ID="CheckBox1" title="If checked: token can be used only once during link validity period."  />
+                <asp:Label runat="server" AssociatedControlID="CheckBox1">Single-use</asp:Label>
             </div>
         </div>
     </div>

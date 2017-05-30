@@ -16,7 +16,7 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "INSERT INTO TokenRequests(RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText) VALUES (@1, @2, @3, @4, @5, @6); SELECT SCOPE_IDENTITY()";
+                cmd.CommandText = "INSERT INTO TokenRequests(RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText, SingleUse) VALUES (@1, @2, @3, @4, @5, @6, @7); SELECT SCOPE_IDENTITY()";
 
                 cmd.Parameters.AddWithValue("@1", tokenRequest.RequestedOn);
                 cmd.Parameters.AddWithValue("@2", tokenRequest.LinkHref);
@@ -24,13 +24,14 @@ namespace LinkShareEasyADO
                 cmd.Parameters.AddWithValue("@4", tokenRequest.LinkId);
                 cmd.Parameters.AddWithValue("@5", tokenRequest.TokenTypeId);
                 cmd.Parameters.AddWithValue("@6", tokenRequest.TokenTypeText);
+                cmd.Parameters.AddWithValue("@7", tokenRequest.SingleUse); 
 
                 var id = Convert.ToInt64(cmd.ExecuteScalar());
                 return Find(id);
             }
         }
 
-        public TokenRequest FindFor(Token token)
+        public TokenRequest FindFor(IToken token)
         {
             int tokenId = token.TokenId;
             using (var c = Connections.GetConnections.GetConnection())
@@ -38,7 +39,7 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText FROM TokenRequests WHERE TokenId = @1";
+                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText, SingleUse FROM TokenRequests WHERE TokenId = @1";
                 cmd.Parameters.AddWithValue("@1", tokenId);
 
                 using (var reader = cmd.ExecuteReader())
@@ -54,6 +55,7 @@ namespace LinkShareEasyADO
                             , LinkId = reader.GetInt32(reader.GetOrdinal("LinkId"))
                             , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
                             , TokenTypeText = reader.GetString(reader.GetOrdinal("TokenTypeText"))
+                            , SingleUse = reader.GetBoolean(reader.GetOrdinal("SingleUse"))
                         };
                     }
                     else
@@ -71,7 +73,7 @@ namespace LinkShareEasyADO
             {
                 c.Open();
 
-                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText FROM TokenRequests WHERE TokenRequestId = @1";
+                cmd.CommandText = "SELECT TOP 1 TokenRequestId, RequestedOn, LinkHref, TokenId, LinkId, TokenTypeId, TokenTypeText, SingleUse FROM TokenRequests WHERE TokenRequestId = @1";
                 cmd.Parameters.AddWithValue("@1", id);
 
                 using (var reader = cmd.ExecuteReader())
@@ -87,6 +89,7 @@ namespace LinkShareEasyADO
                             , LinkId = reader.GetInt32(reader.GetOrdinal("LinkId"))
                             , TokenTypeId = reader.GetInt32(reader.GetOrdinal("TokenTypeId"))
                             , TokenTypeText = reader.GetString(reader.GetOrdinal("TokenTypeText"))
+                            , SingleUse = reader.GetBoolean(reader.GetOrdinal("SingleUSe"))
                         };
                     }
                     else

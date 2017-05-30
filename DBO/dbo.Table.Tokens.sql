@@ -5,6 +5,7 @@
     [ValidForDurationDimId] INT           NULL,
     [ValidForDuration]      INT           NULL,
     [IsExpired]             BIT           NULL,
+    [SingleUse] BIT NULL, 
     PRIMARY KEY CLUSTERED ([TokenId] ASC)
 );
 

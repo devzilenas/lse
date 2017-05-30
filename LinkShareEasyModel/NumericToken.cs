@@ -16,6 +16,8 @@ namespace LinkShareEasyModel
         public int TokenId { get { return NumericTokenId; } set { NumericTokenId = value; } }
         public bool IsExpired { get; set; }
 
+        public bool SingleUse { get; set; }
+
         public string TokenText { get { return Convert.ToString(NumericTokenN); } } 
 
         public int ValidForDurationDimId {get;set;}

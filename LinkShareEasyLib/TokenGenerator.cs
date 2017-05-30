@@ -29,6 +29,7 @@ namespace LinkShareEasyLib
                     {
                         ValidForDuration = ttc.DefaultValidForDuration
                         , ValidForDurationDimId = ttc.DefaultValidForDurationDimId
+                        , SingleUse = tokenRequest.SingleUse
                     };
             return token;
         }

@@ -208,7 +208,6 @@
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
     <Content Include="Sponsoring.aspx" />
-    <Content Include="TokenExpired.aspx" />
     <Content Include="TokenNotFound.aspx" />
     <Content Include="Transfer.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -317,13 +316,6 @@
       <DependentUpon>Sponsoring.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
-    <Compile Include="TokenExpired.aspx.cs">
-      <DependentUpon>TokenExpired.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TokenExpired.aspx.designer.cs">
-      <DependentUpon>TokenExpired.aspx</DependentUpon>
-    </Compile>
     <Compile Include="TokenNotFound.aspx.cs">
       <DependentUpon>TokenNotFound.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

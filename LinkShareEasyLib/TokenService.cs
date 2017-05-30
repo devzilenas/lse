@@ -29,7 +29,10 @@ namespace LinkShareEasyLib
         /// <param name="token"></param>
         public bool ReturnToken(IToken token)
         {
-            UnuseToken(token);
+            if (IsUsed(token))
+            { 
+                UnuseToken(token);
+            }
             return IsAvailable(token);
         }
 

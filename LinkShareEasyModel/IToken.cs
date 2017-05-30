@@ -16,5 +16,6 @@ namespace LinkShareEasyModel
         int ValidForDuration { get; set; }
         int ValidForSeconds { get; set; }
         bool IsExpired { get; set; }
+        bool SingleUse { get; set; }
     }
 }

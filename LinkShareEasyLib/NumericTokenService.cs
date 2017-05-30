@@ -45,7 +45,7 @@ namespace LinkShareEasyLib
         protected override bool IsUsed(LinkShareEasyModel.IToken token)
         {
             ADONumericToken ant = new ADONumericToken();
-            return ant.IsAvailable(token);
+            return !ant.IsAvailable(token);
         }
     }
 }

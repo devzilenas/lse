@@ -53,6 +53,8 @@ namespace LinkShareEasy
         {
             using (var trs = new TransactionScope())
             {
+                DateTime now = DateTime.Now; // Time of request
+
                 ADOLinkRequest alr = new ADOLinkRequest();
 
                 LinkRequest lr = alr.Insert(
@@ -62,10 +64,9 @@ namespace LinkShareEasy
                         Token = TextBox3.Text
                     });
 
-                //Get a link for the token.
-                //Let's get token
+                // Get a link for the token.
                 ADOToken at = new ADOToken();
-                Token token = at.FindUnexpired(lr.Token);
+                IToken token = at.FindUnexpired(lr.Token);
 
                 if (token == null)
                 {
@@ -79,29 +80,26 @@ namespace LinkShareEasy
                 //Now get Token request for this token.
                 ADOTokenRequest atr = new ADOTokenRequest();
                 TokenRequest tr = atr.FindFor(token);
-
-                bool expired = tr.RequestedOn.AddSeconds(token.ValidForSeconds) <= DateTime.Now;
-
-                if (expired)
-                //Token request is too late.
+                
+                bool expiredNow = token.SingleUse || tr.RequestedOn.AddSeconds(token.ValidForSeconds) <= now;
+                if (expiredNow)
                 {
-                    Response.Redirect("TokenExpired.aspx");
-                    return;
+                    token = at.Expire(token); 
                 }
-                else
-                {
-                    //Expire token
-                    at.Expire(token);
 
+                if (token.IsExpired)
+                {
                     //Get token service
                     TokenService ts = new TokenServices().GetTokenService(tt);
                     //Make token available again
                     ts.ReturnToken(token);
-
-                    trs.Complete();
-                    Response.Redirect(String.Format("Transfer.aspx?url2={0}", Server.UrlEncode(tr.LinkHref)));
-                    return;
                 }
+
+                trs.Complete();
+                Response.Redirect(
+                    String.Format("Transfer.aspx?url2={0}", Server.UrlEncode(tr.LinkHref)));
+
+                return;
             }
         }
 
@@ -123,6 +121,7 @@ namespace LinkShareEasy
                     , RequestedOn = DateTime.Now
                     , TokenTypeId = Convert.ToInt32(RadioButtonList1.SelectedValue)
                     , TokenTypeText = RadioButtonList1.SelectedItem.Text
+                    , SingleUse = CheckBox1.Checked
                 };
                 ADOTokenRequest atr = new ADOTokenRequest();
                 tokenRequest = atr.Insert(tokenRequest);
@@ -130,6 +129,7 @@ namespace LinkShareEasy
                 //Use token generator
                 TokenService ts = new TokenServices().GetTokenService(tokenRequest);
                 token = new TokenGenerator().GetTokenForStoring(ts, tokenRequest);
+                token.SingleUse = tokenRequest.SingleUse;
 
                 //Save a link.
                 ADOLink atl = new ADOLink();
