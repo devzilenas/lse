@@ -193,6 +193,11 @@ namespace LinkShareEasy
             DurationDim dd = new ADODurationDim().Find(lsec.DefaultDurationDimId);
             DefaultDurationText.InnerText = dd.DurationDimName;
         }
+
+        protected void WhatIsIt1_Click(object sender, EventArgs e)
+        {
+            TextBox3.Focus();
+        }
     }
 
 }

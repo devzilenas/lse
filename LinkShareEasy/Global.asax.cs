@@ -17,5 +17,16 @@ namespace LinkShareEasy
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        void Application_Error(object sender, EventArgs e)
+        {
+            Exception ex = Server.GetLastError();
+
+            if (ex is HttpUnhandledException)
+            {
+                Server.Transfer("Error.aspx?handler=Application_Error%20-%20Global.asax", true);
+            }
+        }
+        
     }
 }

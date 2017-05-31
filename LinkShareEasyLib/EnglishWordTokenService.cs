@@ -20,14 +20,14 @@ namespace LinkShareEasyLib
 
         protected override LinkShareEasyModel.IToken GetToken()
         {
-            ADOEnglishWord aew = new ADOEnglishWord();
+            ADOEnglishWordToken aew = new ADOEnglishWordToken();
             IToken token = aew.GetAvailable();
             return token; 
         }
 
         protected override LinkShareEasyModel.IToken SetUsed(LinkShareEasyModel.IToken token, bool used)
         {
-            ADOEnglishWord aew = new ADOEnglishWord();
+            ADOEnglishWordToken aew = new ADOEnglishWordToken();
             return aew.SetUsed(token.TokenText, true);
         }
 
@@ -38,7 +38,7 @@ namespace LinkShareEasyLib
 
         protected override bool IsUsed(LinkShareEasyModel.IToken token)
         {
-            ADOEnglishWord aew = new ADOEnglishWord();
+            ADOEnglishWordToken aew = new ADOEnglishWordToken();
             return aew.IsAvailable(token);
         }
     }

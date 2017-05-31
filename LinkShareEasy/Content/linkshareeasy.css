@@ -1,16 +1,23 @@
 ﻿.navbar-header
 { 
-    background-color: #512c1a;
+    /*background-color: #512c1a;*/
+    
 }
 .navbar-inverse .navbar-brand:hover
 { 
     color: #ffd800;
 }
 
+.navbar-brand
+{
+}
+
 .navbar-inverse
 {
-    background-color: #512c1a;
-    background-image: none;
+ 
+  background: #603813; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #603813, #b29f94); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #603813, #b29f94); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .navbar-inverse .navbar-brand
@@ -31,4 +38,24 @@
 .btn:hover
 {
     color: #ffd800;
+}
+
+.btn
+ 
+.btn-default
+{
+    
+  background: #603813; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #603813, #b29f94); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #603813, #b29f94); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.btn a:hover
+{
+    color: #ffd800;
+}
+
+.un:hover /*for unicode highlight*/
+{
+    color:transparent;
+    text-shadow: 0 0 0 #ffd800;
 }
